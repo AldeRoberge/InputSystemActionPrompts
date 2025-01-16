@@ -151,6 +151,8 @@ MonoBehaviour:
     PromptSprite: {fileID: -60574681, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
   - ActionBindingPath: <Keyboard>/shift
     PromptSprite: {fileID: -927634649, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
+  - ActionBindingPath: <Keyboard>/leftShift
+    PromptSprite: {fileID: -927634649, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
   - ActionBindingPath: <Keyboard>/backslash
     PromptSprite: {fileID: 781899812, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
   - ActionBindingPath: <Keyboard>/space
@@ -179,3 +181,4 @@ MonoBehaviour:
     PromptSprite: {fileID: -1815695679, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
   - ActionBindingPath: 
     PromptSprite: {fileID: -533230085, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
+  DeviceSpriteEntries: []

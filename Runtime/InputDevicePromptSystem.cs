@@ -44,7 +44,7 @@ namespace InputSystemActionPrompts.Runtime
         /// <summary>
         /// Currently initialized
         /// </summary>
-        private static bool s_Initialized = false;
+        private static bool s_Initialized;
 
         /// <summary>
         /// The settings file
@@ -61,6 +61,8 @@ namespace InputSystemActionPrompts.Runtime
         /// </summary>
         public static Action<InputDevice> OnActiveDeviceChanged = delegate { };
 
+        private static List<InputActionAsset> InputActionAssets = new();
+
         /// <summary>
         /// Event listener for button presses on input system
         /// </summary>
@@ -68,37 +70,40 @@ namespace InputSystemActionPrompts.Runtime
 
         private static InputDevicePromptData s_PlatformDeviceOverride;
 
-        public static bool GetPlatformDeviceOverride(out InputDevicePromptData inputDevice)
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void InitializeOnLoad()
         {
-            if (s_PlatformDeviceOverride != null)
-            {
-                inputDevice = s_PlatformDeviceOverride;
-                return true;
-            }
-
-            // get the current platform
-            var platform = Application.platform;
-            // check if we have a platform override
-            foreach (var platformOverride in s_Settings.RuntimePlatformsOverride)
-            {
-                if (platformOverride.Platform == platform)
-                {
-                    inputDevice = platformOverride.DevicePromptData;
-                    return true;
-                }
-            }
-
-            inputDevice = null;
-            return false;
+            s_ActionBindingMap = new();
+            s_DeviceDataBindingMap = new();
+            s_Settings = null;
+            s_Initialized = false;
+            s_ActiveDevice = null;
+            OnActiveDeviceChanged = delegate { };
+            s_EventListener?.Dispose();
+            s_EventListener = null;
+            s_PlatformDeviceOverride = null;
+            InputActionAssets = new List<InputActionAsset>();
         }
 
-        /// <summary>
-        /// Initializes data structures and load settings, called on first use
-        /// </summary>
-        private static void Initialize()
+
+        public static void Initialize(InputActionAsset inputActionAsset)
         {
-            Debug.Log("Initialising InputDevicePromptSystem");
-            s_Settings = InputSystemDevicePromptSettings.GetSettings();
+            Initialize(new List<InputActionAsset> { inputActionAsset });
+        }
+
+        public static void Initialize(List<InputActionAsset> inputActions)
+        {
+            InitializeOnLoad();
+
+            InputActionAssets.Clear();
+            InputActionAssets = inputActions;
+
+            Debug.Log("Initializing InputDevicePromptSystem");
+            s_Settings = InputSystemDevicePromptSettings.GetSettingsFromResources();
+
+            InputActionAssets.AddRange(s_Settings.InputActionAssets);
+
+            Debug.Log($"Loaded {InputActionAssets.Count} InputActionAssets");
 
             if (s_Settings == null)
             {
@@ -126,6 +131,31 @@ namespace InputSystemActionPrompts.Runtime
             s_Initialized = true;
         }
 
+
+        public static bool GetPlatformDeviceOverride(out InputDevicePromptData inputDevice)
+        {
+            if (s_PlatformDeviceOverride != null)
+            {
+                inputDevice = s_PlatformDeviceOverride;
+                return true;
+            }
+
+            var currentPlatform = Application.platform;
+
+            foreach (var platformOverride in s_Settings.RuntimePlatformsOverride)
+            {
+                if (platformOverride.Platform == currentPlatform)
+                {
+                    // Platform specific override found
+                    inputDevice = platformOverride.DevicePromptData;
+                    return true;
+                }
+            }
+
+            inputDevice = null;
+            return false;
+        }
+
         /// <summary>
         /// Called on device change
         /// </summary>
@@ -151,7 +181,7 @@ namespace InputSystemActionPrompts.Runtime
         /// <returns></returns>
         public static string InsertPromptSprites(string inputText)
         {
-            if (!s_Initialized) Initialize();
+            if (!s_Initialized) return "Waiting for initialization...";
             if (!s_Initialized) return "InputSystemDevicePrompt Settings missing - please create using menu item 'Window/Input System Device Prompts/Create Settings'";
 
             var foundTags = GetTagList(inputText);
@@ -180,7 +210,7 @@ namespace InputSystemActionPrompts.Runtime
         /// <returns></returns>
         public static Sprite GetActionPathBindingSprite(string inputTag)
         {
-            if (!s_Initialized) Initialize();
+            if (!s_Initialized) return null;
             var (_, matchingPrompt) = GetActionPathBindingPromptEntries(inputTag);
             return matchingPrompt is { Count: > 0 } ? matchingPrompt[0].PromptSprite : null;
         }
@@ -192,7 +222,7 @@ namespace InputSystemActionPrompts.Runtime
         /// <returns></returns>
         public static Sprite GetDeviceSprite(string spriteName)
         {
-            if (!s_Initialized) Initialize();
+            if (!s_Initialized) return null;
 
             InputDevicePromptData validDevice;
 
@@ -425,7 +455,7 @@ namespace InputSystemActionPrompts.Runtime
             s_ActionBindingMap = new Dictionary<string, List<ActionBindingMapEntry>>();
 
             // Build a map of all controls and associated bindings
-            foreach (var inputActionAsset in s_Settings.InputActionAssets)
+            foreach (var inputActionAsset in InputActionAssets)
             {
                 var allActionMaps = inputActionAsset.actionMaps;
                 foreach (var actionMap in allActionMaps)

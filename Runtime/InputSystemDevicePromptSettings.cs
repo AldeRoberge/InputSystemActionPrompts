@@ -62,7 +62,7 @@ namespace InputSystemActionPrompts.Runtime
 
         public const string SettingsDataFile = "InputSystemDevicePromptSettings";
 
-        public static InputSystemDevicePromptSettings GetSettings()
+        public static InputSystemDevicePromptSettings GetSettingsFromResources()
         {
             var settings = Resources.Load<InputSystemDevicePromptSettings>(SettingsDataFile);
             if (settings == null)
