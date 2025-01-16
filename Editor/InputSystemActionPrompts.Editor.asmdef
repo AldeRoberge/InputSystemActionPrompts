@@ -1,6 +1,6 @@
 {
     "name": "InputSystemActionPrompts.Editor",
-    "rootNamespace": "",
+    "rootNamespace": "InputSystemActionPrompts.Editor",
     "references": [
         "GUID:4758a843682c7fb4ab97807e78fae809",
         "GUID:75469ad4d38634e559750d17036d5f7c"
