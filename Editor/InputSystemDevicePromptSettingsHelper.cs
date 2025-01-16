@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using InputSystemActionPrompts;
+using InputSystemActionPrompts.Runtime;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;

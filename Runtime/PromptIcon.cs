@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-namespace InputSystemActionPrompts
+namespace InputSystemActionPrompts.Runtime
 {
     [RequireComponent(typeof(Image))]
     public class PromptIcon : MonoBehaviour

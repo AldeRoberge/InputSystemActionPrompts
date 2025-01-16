@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace InputSystemActionPrompts
+namespace InputSystemActionPrompts.Runtime
 {
     /// <summary>
     /// Settings for Input Device Prompt system

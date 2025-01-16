@@ -1,9 +1,8 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace InputSystemActionPrompts
+namespace InputSystemActionPrompts.Runtime
 {
     [RequireComponent(typeof(TextMeshProUGUI))]
     public class PromptText : MonoBehaviour

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-namespace InputSystemActionPrompts
+namespace InputSystemActionPrompts.Runtime
 {
     /// <summary>
     /// A single entry for an action and the corresponding sprite to use

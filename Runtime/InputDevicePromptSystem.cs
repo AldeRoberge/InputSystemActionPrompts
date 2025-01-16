@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-namespace InputSystemActionPrompts
+namespace InputSystemActionPrompts.Runtime
 {
     /// <summary>
     /// Enumeration of device type
