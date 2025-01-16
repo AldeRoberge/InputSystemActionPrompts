@@ -31,6 +31,12 @@ namespace InputSystemActionPrompts.Runtime
 
     public static class InputDevicePromptSystem
     {
+        public static string WAITING_FOR_INITIALIZATION = "WAITING_FOR_INITIALIZATION";
+        public static string MISSING_PROMPT             = "MISSING_PROMPT";
+        public static string MISSING_ACTION             = "MISSING_ACTION";
+        public static string MISSING_DEVICE_ENTRIES     = "MISSING_DEVICE_ENTRIES";
+        public static string NO_ACTIVE_DEVICE           = "NO_ACTIVE_DEVICE";
+
         /// <summary>
         /// Map of action paths (eg "Player/Move" to binding map entries eg "Gamepad/leftStick")
         /// </summary>
@@ -62,6 +68,9 @@ namespace InputSystemActionPrompts.Runtime
         public static Action<InputDevice> OnActiveDeviceChanged = delegate { };
 
         private static List<InputActionAsset> InputActionAssets = new();
+
+
+        public static Action OnInitialized = delegate { };
 
         /// <summary>
         /// Event listener for button presses on input system
@@ -129,6 +138,7 @@ namespace InputSystemActionPrompts.Runtime
             GetPlatformDeviceOverride(out s_PlatformDeviceOverride);
 
             s_Initialized = true;
+            OnInitialized?.Invoke();
         }
 
 
@@ -181,7 +191,7 @@ namespace InputSystemActionPrompts.Runtime
         /// <returns></returns>
         public static string InsertPromptSprites(string inputText)
         {
-            if (!s_Initialized) return "Waiting for initialization...";
+            if (!s_Initialized) return WAITING_FOR_INITIALIZATION;
             if (!s_Initialized) return "InputSystemDevicePrompt Settings missing - please create using menu item 'Window/Input System Device Prompts/Create Settings'";
 
             var foundTags = GetTagList(inputText);
@@ -238,7 +248,7 @@ namespace InputSystemActionPrompts.Runtime
 
                 if (!s_DeviceDataBindingMap.TryGetValue(activeDeviceName, out var value))
                 {
-                    Debug.LogError($"MISSING_DEVICE_ENTRIES '{activeDeviceName}'");
+                    Debug.LogError($"{MISSING_DEVICE_ENTRIES} '{activeDeviceName}'");
                     return null;
                 }
 
@@ -266,12 +276,12 @@ namespace InputSystemActionPrompts.Runtime
         {
             if (s_PlatformDeviceOverride == null) // not platform override
             {
-                if (s_ActiveDevice == null) return "NO_ACTIVE_DEVICE";
+                if (s_ActiveDevice == null) return NO_ACTIVE_DEVICE;
                 var activeDeviceName = s_ActiveDevice.name;
 
                 if (!s_DeviceDataBindingMap.ContainsKey(activeDeviceName))
                 {
-                    return $"MISSING_DEVICE_ENTRIES '{activeDeviceName}'";
+                    return $"{MISSING_DEVICE_ENTRIES} '{activeDeviceName}'";
                 }
             }
 
@@ -279,14 +289,14 @@ namespace InputSystemActionPrompts.Runtime
 
             if (!s_ActionBindingMap.ContainsKey(lowerCaseTag))
             {
-                return $"MISSING_ACTION {lowerCaseTag}";
+                return $"{MISSING_ACTION} '{lowerCaseTag}'";
             }
 
             var (validDevice, matchingPrompt) = GetActionPathBindingPromptEntries(inputTag);
 
             if (matchingPrompt == null || matchingPrompt.Count == 0)
             {
-                return $"MISSING_PROMPT '{inputTag}'";
+                return $"{MISSING_PROMPT} '{inputTag}'";
             }
 
             // Return each
@@ -371,8 +381,7 @@ namespace InputSystemActionPrompts.Runtime
 
             return (validDevice, validEntries);
         }
-
-
+        
         /// <summary>
         /// Extract the usage from a binding path, eg "*/{Submit}" returns "Submit"
         /// </summary>
@@ -382,7 +391,6 @@ namespace InputSystemActionPrompts.Runtime
         {
             return actionBinding.Contains("*/{") ? actionBinding.Substring(3, actionBinding.Length - 4) : string.Empty;
         }
-
 
         /// <summary>
         /// Extracts all tags from a given string
