@@ -7,7 +7,6 @@ namespace InputSystemActionPrompts
     [RequireComponent(typeof(Image))]
     public class DeviceSpriteSwap : MonoBehaviour
     {
-
         /// <summary>
         /// The image to apply the prompt sprite to
         /// </summary>
@@ -20,7 +19,7 @@ namespace InputSystemActionPrompts
 
         [SerializeField] private bool _setNativeSize = true;
 
-        void Start()
+        private void Start()
         {
             m_Image = GetComponent<Image>();
             if (m_Image == null) return;
@@ -38,7 +37,6 @@ namespace InputSystemActionPrompts
         /// <summary>
         /// Called when active input device changed
         /// </summary>
-        /// <param name="obj"></param>
         private void DeviceChanged(InputDevice device)
         {
             RefreshSprite();
@@ -56,6 +54,5 @@ namespace InputSystemActionPrompts
             if (_setNativeSize)
                 m_Image.SetNativeSize();
         }
-
     }
 }
