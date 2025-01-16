@@ -304,12 +304,21 @@ namespace InputSystemActionPrompts.Runtime
         /// </summary>
         /// <param name="inputTag"></param>
         /// <returns></returns>
+        /// <summary>
+        /// Gets all matching prompt entries for a given tag (eg "Player/Jump")
+        /// </summary>
+        /// <param name="inputTag"></param>
+        /// <returns></returns>
         private static (InputDevicePromptData, List<ActionBindingPromptEntry>) GetActionPathBindingPromptEntries(string inputTag)
         {
             InputDevicePromptData validDevice;
 
             var lowerCaseTag = inputTag.ToLower();
-            if (!s_ActionBindingMap.ContainsKey(lowerCaseTag)) return (null, null);
+            if (!s_ActionBindingMap.ContainsKey(lowerCaseTag))
+            {
+                Debug.LogError($"Action binding map does not contain key '{lowerCaseTag}'");
+                return (null, null);
+            }
 
             if (s_PlatformDeviceOverride != null)
             {
@@ -317,8 +326,17 @@ namespace InputSystemActionPrompts.Runtime
             }
             else
             {
-                if (s_ActiveDevice == null) return (null, null);
-                if (!s_DeviceDataBindingMap.TryGetValue(s_ActiveDevice.name, out var value)) return (null, null);
+                if (s_ActiveDevice == null)
+                {
+                    Debug.LogError("No active device is set.");
+                    return (null, null);
+                }
+
+                if (!s_DeviceDataBindingMap.TryGetValue(s_ActiveDevice.name, out var value))
+                {
+                    Debug.LogError($"Device data binding map does not contain entries for device '{s_ActiveDevice.name}'");
+                    return (null, null);
+                }
 
                 validDevice = value;
             }
@@ -328,59 +346,32 @@ namespace InputSystemActionPrompts.Runtime
 
             foreach (var actionBinding in actionBindings)
             {
-                //Debug.Log($"Checking binding '{actionBinding}' on device {validDevice.name}");
                 var usage = GetUsageFromBindingPath(actionBinding.BindingPath);
                 if (string.IsNullOrEmpty(usage))
                 {
                     var matchingPrompt = validDevice.ActionBindingPromptEntries.FirstOrDefault((prompt) =>
-                        string.Equals(prompt.ActionBindingPath, actionBinding.BindingPath,
-                            StringComparison.CurrentCultureIgnoreCase));
+                        string.Equals(prompt.ActionBindingPath, actionBinding.BindingPath, StringComparison.CurrentCultureIgnoreCase));
+
                     if (matchingPrompt != null)
                     {
-                        //Debug.Log($"Found matching prompt {matchingPrompt.ActionBindingPath} for {inputTag}");
                         validEntries.Add(matchingPrompt);
                     }
-                }
-                else
-                {
-                    // This is a usage, eg "Submit" or "Cancel", in the format "*/{Submit}"
-
-                    // Its possible in some control schemes (eg mouse keyboard) that active device
-                    // Doesnt have a given usage (eg submit), so will want to find an alternative
-
-                    var matchingUsageFound = false;
-                    var deviceList = new List<InputDevice>(InputSystem.devices);
-                    // Move active device to front of queue
-                    deviceList.Remove(s_ActiveDevice);
-                    deviceList.Insert(0, s_ActiveDevice);
-
-                    for (var i = 0; i < deviceList.Count && !matchingUsageFound; i++)
+                    else
                     {
-                        var testDevice = deviceList[i];
-                        foreach (var control in testDevice.allControls)
-                        {
-                            foreach (var controlUsage in control.usages)
-                            {
-                                if (controlUsage.ToLower() == usage.ToLower())
-                                {
-                                    // Match! Search for prompt entry with same extension (ignore first part eg "gamepad")
-                                    var matchingPrompt = validDevice.ActionBindingPromptEntries.FirstOrDefault((prompt) =>
-                                        string.Equals(prompt.ActionBindingPath.Split('/').Last(), control.name,
-                                            StringComparison.CurrentCultureIgnoreCase));
-                                    if (matchingPrompt != null)
-                                    {
-                                        validEntries.Add(matchingPrompt);
-                                        matchingUsageFound = true;
-                                    }
-                                }
-                            }
-                        }
+                        Debug.LogError($"Missing prompt sprite for binding path '{actionBinding.BindingPath}' on device '{validDevice.name}'");
                     }
                 }
             }
 
+            if (validEntries.Count == 0)
+            {
+                Debug.LogError($"No valid prompt entries found for input tag '{inputTag}'");
+                return (validDevice, null);
+            }
+
             return (validDevice, validEntries);
         }
+
 
         /// <summary>
         /// Extract the usage from a binding path, eg "*/{Submit}" returns "Submit"

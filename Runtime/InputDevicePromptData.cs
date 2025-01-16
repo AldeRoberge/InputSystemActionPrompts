@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 
@@ -22,6 +23,7 @@ namespace InputSystemActionPrompts.Runtime
         /// The name of the corresponding sprite. We assume the TMP Sprite asset and source sprite are
         /// synced up and have the same name 
         /// </summary>
+        [ShowAssetPreview]
         public Sprite PromptSprite;
     }
 

@@ -111,9 +111,13 @@ MonoBehaviour:
     PromptSprite: {fileID: 1077829635, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
   - ActionBindingPath: <Keyboard>/capsLock
     PromptSprite: {fileID: -85097804, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
-  - ActionBindingPath: 
+  - ActionBindingPath: <Keyboard>/command
     PromptSprite: {fileID: -676145714, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
   - ActionBindingPath: <Keyboard>/ctrl
+    PromptSprite: {fileID: 257387088, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
+  - ActionBindingPath: <Keyboard>/leftCtrl
+    PromptSprite: {fileID: 257387088, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
+  - ActionBindingPath: <Keyboard>/rightCtrl
     PromptSprite: {fileID: 257387088, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
   - ActionBindingPath: <Keyboard>/delete
     PromptSprite: {fileID: 1605984260, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
@@ -139,13 +143,13 @@ MonoBehaviour:
     PromptSprite: {fileID: -1895691866, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
   - ActionBindingPath: <Keyboard>/pageUp
     PromptSprite: {fileID: 1159344395, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
-  - ActionBindingPath: 
+  - ActionBindingPath: <Keyboard>/plus
     PromptSprite: {fileID: 415273177, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
   - ActionBindingPath: <Keyboard>/printScreen
     PromptSprite: {fileID: -1292464888, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
-  - ActionBindingPath: 
+  - ActionBindingPath: <Keyboard>/question
     PromptSprite: {fileID: -1632993421, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
-  - ActionBindingPath: 
+  - ActionBindingPath: <Keyboard>/quote
     PromptSprite: {fileID: 460877792, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
   - ActionBindingPath: <Keyboard>/semicolon
     PromptSprite: {fileID: -60574681, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
@@ -153,16 +157,22 @@ MonoBehaviour:
     PromptSprite: {fileID: -927634649, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
   - ActionBindingPath: <Keyboard>/leftShift
     PromptSprite: {fileID: -927634649, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
+  - ActionBindingPath: <Keyboard>/rightShift
+    PromptSprite: {fileID: -927634649, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
   - ActionBindingPath: <Keyboard>/backslash
     PromptSprite: {fileID: 781899812, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
   - ActionBindingPath: <Keyboard>/space
     PromptSprite: {fileID: -1707516993, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
   - ActionBindingPath: <Keyboard>/tab
     PromptSprite: {fileID: -1727276284, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
-  - ActionBindingPath: 
+  - ActionBindingPath: <Keyboard>/tilda
     PromptSprite: {fileID: 1842526010, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
-  - ActionBindingPath: 
+  - ActionBindingPath: <Keyboard>/windows
     PromptSprite: {fileID: -36299734, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
+  - ActionBindingPath: <Keyboard>/slash
+    PromptSprite: {fileID: 781899812, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
+  - ActionBindingPath: <Keyboard>/period
+    PromptSprite: {fileID: 0}
   - ActionBindingPath: 
     PromptSprite: {fileID: -1586294742, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
   - ActionBindingPath: 
@@ -173,12 +183,12 @@ MonoBehaviour:
     PromptSprite: {fileID: -587933148, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
   - ActionBindingPath: <Mouse>/rightButton
     PromptSprite: {fileID: 1970736822, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
-  - ActionBindingPath: 
+  - ActionBindingPath: <Mouse>/forwardButton
     PromptSprite: {fileID: 30538136, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
-  - ActionBindingPath: 
+  - ActionBindingPath: <Mouse>/backButton
     PromptSprite: {fileID: 2084837134, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
   - ActionBindingPath: 
     PromptSprite: {fileID: -1815695679, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
-  - ActionBindingPath: 
+  - ActionBindingPath: <Mouse>/middleButton
     PromptSprite: {fileID: -533230085, guid: b5c1abc09a9f699429c809896b58df72, type: 3}
   DeviceSpriteEntries: []
